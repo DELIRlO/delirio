@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carlos Augusto - GitHub Stats & API</title>
+  <style>
+    /* Estilos Gerais */
+    :root {
+      --primary-color: #2b2d42;
+      --secondary-color: #8d99ae;
+      --accent-color: #ef233c;
+      --light-color: #edf2f4;
+      --dark-color: #1a1a2e;
+      --github-border: #e1e4e8;
+      --github-bg: white;
+      --tag-bg: #f1f8fe;
+      --tag-color: #0366d6;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* Container GitHub Stats */
+    .github-stats-container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid var(--github-border);
+      border-radius: 6px;
+      background: var(--github-bg);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .github-stats-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+
+    .github-stats-item {
+      margin-bottom: 8px;
+    }
+
+    .github-languages-title {
+      margin: 20px 0 10px 0;
+      font-weight: bold;
+    }
+
+    .language-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .language-name {
+      width: 100px;
+    }
+
+    .language-percent {
+      width: 50px;
+      text-align: right;
+      margin-right: 10px;
+    }
+
+    .language-bar-inner {
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    .github-tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .github-tag {
+      background-color: var(--tag-bg);
+      color: var(--tag-color);
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+    }
+
+    /* API Documentation Styles */
+    .api-container {
+      max-width: 1200px;
+      margin: 30px auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .api-header {
+      background: var(--primary-color);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .api-title {
+      margin: 0;
+      font-size: 2.2rem;
+    }
+
+    .api-description {
+      margin: 10px 0 0;
+      font-weight: 300;
+    }
+
+    .api-nav {
+      background: var(--dark-color);
+      padding: 10px 20px;
+    }
+
+    .api-nav-list {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .api-nav-item {
+      margin-right: 15px;
+    }
+
+    .api-nav-link {
+      color: var(--light-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .api-nav-link:hover {
+      color: var(--accent-color);
+    }
+
+    .api-content {
+      display: flex;
+      min-height: 500px;
+    }
+
+    .api-sidebar {
+      width: 250px;
+      background: var(--light-color);
+      padding: 20px;
+      border-right: 1px solid #ddd;
+    }
+
+    .api-endpoint-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .api-endpoint-item {
+      margin-bottom: 10px;
+    }
+
+    .api-endpoint-link {
+      display: block;
+      padding: 8px 12px;
+      background: white;
+      border-radius: 5px;
+      color: var(--primary-color);
+      text-decoration: none;
+      border-left: 3px solid var(--accent-color);
+      transition: all 0.3s;
+    }
+
+    .api-endpoint-link:hover {
+      background: var(--accent-color);
+      color: white;
+    }
+
+    .api-docs {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .api-section {
+      margin-bottom: 40px;
+    }
+
+    .api-section-title {
+      color: var(--primary-color);
+      border-bottom: 2px solid var(--secondary-color);
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+
+    .api-method {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .api-method.get {
+      background: #61affe;
+      color: #1a1a2e;
+    }
+
+    .api-method.post {
+      background: #49cc90;
+      color: white;
+    }
+
+    .api-method.put {
+      background: #fca130;
+      color: white;
+    }
+
+    .api-method.delete {
+      background: #f93e3e;
+      color: white;
+    }
+
+    .api-url {
+      background: #f0f0f0;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-family: monospace;
+      word-break: break-all;
+    }
+
+    .api-params {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    .api-params th {
+      background: var(--primary-color);
+      color: white;
+      text-align: left;
+      padding: 10px;
+    }
+
+    .api-params td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .api-params tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    .api-footer {
+      background: var(--dark-color);
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .api-content {
+        flex-direction: column;
+      }
+      
+      .api-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- GitHub Stats Section -->
+  <div class="github-stats-container">
+    <div class="github-stats-title">CARLOS AUGUSTO DINIZ FILHO's GitHub Stats</div>
+    
+    <div class="github-stats-item"><strong>Total Stars Earned:</strong> <span id="stars">5</span></div>
+    <div class="github-stats-item"><strong>Total Commits (2025):</strong> <span id="commits">66</span></div>
+    <div class="github-stats-item"><strong>Total PRs:</strong> <span id="prs">0</span></div>
+    <div class="github-stats-item"><strong>Total Issues:</strong> <span id="issues">0</span></div>
+    <div class="github-stats-item"><strong>Contributed to (last year):</strong> <span id="contributed">0</span></div>
+
+    <div class="github-languages-title"><strong>Most Used Languages</strong></div>
+    <div id="languages">
+      <!-- Python -->
+      <div class="language-bar">
+        <span class="language-name">Python</span>
+        <span class="language-percent">62.99%</span>
+        <div class="language-bar-inner" style="background-color: #3572A5; width: 62.99%;"></div>
+      </div>
+      <!-- PHP -->
+      <div class="language-bar">
+        <span class="language-name">PHP</span>
+        <span class="language-percent">4.56%</span>
+        <div class="language-bar-inner" style="background-color: #4F5D95; width: 4.56%;"></div>
+      </div>
+      <!-- JavaScript -->
+      <div class="language-bar">
+        <span class="language-name">JavaScript</span>
+        <span class="language-percent">14.63%</span>
+        <div class="language-bar-inner" style="background-color: #F1E05A; width: 14.63%;"></div>
+      </div>
+      <!-- HTML -->
+      <div class="language-bar">
+        <span class="language-name">HTML</span>
+        <span class="language-percent">3.66%</span>
+        <div class="language-bar-inner" style="background-color: #E34C26; width: 3.66%;"></div>
+      </div>
+      <!-- C -->
+      <div class="language-bar">
+        <span class="language-name">C</span>
+        <span class="language-percent">11.94%</span>
+        <div class="language-bar-inner" style="background-color: #555555; width: 11.94%;"></div>
+      </div>
+      <!-- CSS -->
+      <div class="language-bar">
+        <span class="language-name">CSS</span>
+        <span class="language-percent">2.21%</span>
+        <div class="language-bar-inner" style="background-color: #563D7C; width: 2.21%;"></div>
+      </div>
+    </div>
+
+    <div class="github-tags-container">
+      <span class="github-tag">Python</span>
+      <span class="github-tag">PHP</span>
+      <span class="github-tag">Quasar</span>
+      <span class="github-tag">TypeScript</span>
+      <span class="github-tag">Arch Linux</span>
+      <span class="github-tag">CSS3</span>
+      <span class="github-tag">React</span>
+      <span class="github-tag">Vue.js</span>
+      <span class="github-tag">Node.js</span>
+      <span class="github-tag">JavaScript</span>
+      <span class="github-tag">HTML5</span>
+    </div>
+  </div>
+
+  <!-- API Documentation Section -->
+  <div class="api-container">
+    <header class="api-header">
+      <h1 class="api-title">API do Carlos Augusto</h1>
+      <p class="api-description">Documentação completa da API</p>
+    </header>
+    
+    <nav class="api-nav">
+      <ul class="api-nav-list">
+        <li class="api-nav-item"><a href="#introduction" class="api-nav-link">Introdução</a></li>
+        <li class="api-nav-item"><a href="#authentication" class="api-nav-link">Autenticação</a></li>
+        <li class="api-nav-item"><a href="#endpoints" class="api-nav-link">Endpoints</a></li>
+      </ul>
+    </nav>
+    
+    <div class="api-content">
+      <aside class="api-sidebar">
+        <h3>Endpoints</h3>
+        <ul class="api-endpoint-list">
+          <li class="api-endpoint-item"><a href="#get-users" class="api-endpoint-link">GET /users</a></li>
+          <li class="api-endpoint-item"><a href="#get-user" class="api-endpoint-link">GET /users/{id}</a></li>
+          <li class="api-endpoint-item"><a href="#create-user" class="api-endpoint-link">POST /users</a></li>
+          <li class="api-endpoint-item"><a href="#update-user" class="api-endpoint-link">PUT /users/{id}</a></li>
+          <li class="api-endpoint-item"><a href="#delete-user" class="api-endpoint-link">DELETE /users/{id}</a></li>
+        </ul>
+      </aside>
+      
+      <main class="api-docs">
+        <section id="introduction" class="api-section">
+          <h2 class="api-section-title">Introdução</h2>
+          <p>Bem-vindo à documentação da API. Esta API fornece acesso aos recursos do sistema.</p>
+        </section>
+        
+        <section id="get-users" class="api-section">
+          <h2 class="api-section-title">
+            <span class="api-method get">GET</span>
+            Listar Usuários
+          </h2>
+          <div class="api-url">https://suaapi.com/users</div>
+          
+          <h3>Parâmetros</h3>
+          <table class="api-params">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>limit</td>
+                <td>integer</td>
+                <td>Número máximo de resultados (padrão: 10)</td>
+              </tr>
+              <tr>
+                <td>offset</td>
+                <td>integer</td>
+                <td>Deslocamento para paginação (padrão: 0)</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+    
+    <footer class="api-footer">
+      <p>© 2023 API do Carlos Augusto. Todos os direitos reservados.</p>
+    </footer>
+  </div>
+
+  <script>
+    // Caso queira tornar dinâmico no futuro:
+    document.addEventListener('DOMContentLoaded', function() {
+      // Exemplo de como atualizar os dados via API:
+      // fetch('https://api.github.com/users/carlos-augusto-diniz-filho')
+      //   .then(response => response.json())
+      //   .then(data => {
+      //       document.getElementById('stars').textContent = data.public_repos;
+      //   });
+    });
+  </script>
+</body>
+</html>
