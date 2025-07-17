@@ -7,22 +7,22 @@
   <style>
     /* Estilos Gerais */
     :root {
-      --primary-color: #2b2d42;
-      --secondary-color: #8d99ae;
-      --accent-color: #ef233c;
-      --light-color: #edf2f4;
-      --dark-color: #1a1a2e;
-      --github-border: #e1e4e8;
-      --github-bg: white;
-      --tag-bg: #f1f8fe;
-      --tag-color: #0366d6;
+      --primary-color: #ffffff;
+      --secondary-color: #cccccc;
+      --accent-color: #ff0000;
+      --light-color: #222222;
+      --dark-color: #000000;
+      --github-border: #333333;
+      --github-bg: #111111;
+      --tag-bg: #333333;
+      --tag-color: #ffffff;
     }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       line-height: 1.6;
-      color: #333;
-      background-color: #f5f5f5;
+      color: white;
+      background-color: black;
       margin: 0;
       padding: 20px;
     }
@@ -35,7 +35,7 @@
       border: 1px solid var(--github-border);
       border-radius: 6px;
       background: var(--github-bg);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
     }
 
     .github-stats-title {
@@ -47,11 +47,13 @@
 
     .github-stats-item {
       margin-bottom: 8px;
+      color: white;
     }
 
     .github-languages-title {
       margin: 20px 0 10px 0;
       font-weight: bold;
+      color: white;
     }
 
     .language-bar {
@@ -62,12 +64,14 @@
 
     .language-name {
       width: 100px;
+      color: white;
     }
 
     .language-percent {
       width: 50px;
       text-align: right;
       margin-right: 10px;
+      color: white;
     }
 
     .language-bar-inner {
@@ -94,14 +98,14 @@
     .api-container {
       max-width: 1200px;
       margin: 30px auto;
-      background: white;
+      background: #111111;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
       overflow: hidden;
     }
 
     .api-header {
-      background: var(--primary-color);
+      background: var(--dark-color);
       color: white;
       padding: 20px;
       text-align: center;
@@ -118,7 +122,7 @@
     }
 
     .api-nav {
-      background: var(--dark-color);
+      background: #000000;
       padding: 10px 20px;
     }
 
@@ -151,9 +155,9 @@
 
     .api-sidebar {
       width: 250px;
-      background: var(--light-color);
+      background: #222222;
       padding: 20px;
-      border-right: 1px solid #ddd;
+      border-right: 1px solid #444;
     }
 
     .api-endpoint-list {
@@ -168,9 +172,9 @@
     .api-endpoint-link {
       display: block;
       padding: 8px 12px;
-      background: white;
+      background: #333333;
       border-radius: 5px;
-      color: var(--primary-color);
+      color: white;
       text-decoration: none;
       border-left: 3px solid var(--accent-color);
       transition: all 0.3s;
@@ -184,6 +188,7 @@
     .api-docs {
       flex: 1;
       padding: 30px;
+      background: #111111;
     }
 
     .api-section {
@@ -226,7 +231,8 @@
     }
 
     .api-url {
-      background: #f0f0f0;
+      background: #222222;
+      color: white;
       padding: 10px 15px;
       border-radius: 5px;
       font-family: monospace;
@@ -237,10 +243,11 @@
       width: 100%;
       border-collapse: collapse;
       margin: 20px 0;
+      color: white;
     }
 
     .api-params th {
-      background: var(--primary-color);
+      background: #000000;
       color: white;
       text-align: left;
       padding: 10px;
@@ -248,15 +255,16 @@
 
     .api-params td {
       padding: 10px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #444;
+      background: #222222;
     }
 
     .api-params tr:nth-child(even) {
-      background: #f9f9f9;
+      background: #333333;
     }
 
     .api-footer {
-      background: var(--dark-color);
+      background: #000000;
       color: white;
       text-align: center;
       padding: 20px;
@@ -272,7 +280,7 @@
       .api-sidebar {
         width: 100%;
         border-right: none;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #444;
       }
     }
   </style>
@@ -415,14 +423,8 @@
   </div>
 
   <script>
-    // Caso queira tornar dinâmico no futuro:
     document.addEventListener('DOMContentLoaded', function() {
-      // Exemplo de como atualizar os dados via API:
-      // fetch('https://api.github.com/users/carlos-augusto-diniz-filho')
-      //   .then(response => response.json())
-      //   .then(data => {
-      //       document.getElementById('stars').textContent = data.public_repos;
-      //   });
+      // Se quiser adicionar funcionalidades dinâmicas no futuro
     });
   </script>
 </body>
